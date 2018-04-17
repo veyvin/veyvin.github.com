@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="sample post,code,highlighting," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="C# 设置和获取一个字节的某一位的值的方法 自己工作中遇到需要对单字节的高位、低位进行赋值，即一个字节byte，想要给每一位都赋值，这个值是动态来的，是0或是1。好不容易收集到一些珍贵资料，整理一下：一、设置方法code： /// &amp;lt;summary&amp;gt; /// 设置某一位的值 /// &amp;lt;/summary&amp;gt; /// &amp;lt;param name=&amp;quot;data&amp;quot;">
+<meta name="keywords" content="sample post,code,highlighting">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C# 设置获取某一个字节">
+<meta property="og:url" content="http://yoursite.com/2018/04/17/2014-10-22-C# 设置和获取一个字节的某一位的值的方法/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="C# 设置和获取一个字节的某一位的值的方法 自己工作中遇到需要对单字节的高位、低位进行赋值，即一个字节byte，想要给每一位都赋值，这个值是动态来的，是0或是1。好不容易收集到一些珍贵资料，整理一下：一、设置方法code： /// &amp;lt;summary&amp;gt; /// 设置某一位的值 /// &amp;lt;/summary&amp;gt; /// &amp;lt;param name=&amp;quot;data&amp;quot;">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-04-17T10:34:28.588Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C# 设置获取某一个字节">
+<meta name="twitter:description" content="C# 设置和获取一个字节的某一位的值的方法 自己工作中遇到需要对单字节的高位、低位进行赋值，即一个字节byte，想要给每一位都赋值，这个值是动态来的，是0或是1。好不容易收集到一些珍贵资料，整理一下：一、设置方法code： /// &amp;lt;summary&amp;gt; /// 设置某一位的值 /// &amp;lt;/summary&amp;gt; /// &amp;lt;param name=&amp;quot;data&amp;quot;">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/04/17/2014-10-22-C# 设置和获取一个字节的某一位的值的方法/"/>
+
+
+
+
+
+  <title>C# 设置获取某一个字节 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/17/2014-10-22-C# 设置和获取一个字节的某一位的值的方法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">C# 设置获取某一个字节</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-17T22:50:45+08:00">
+                2018-04-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>C# 设置和获取一个字节的某一位的值的方法</p>
+<p>自己工作中遇到需要对单字节的高位、低位进行赋值，即一个字节byte，想要给每一位都赋值，这个值是动态来的，是0或是1。<br>好不容易收集到一些珍贵资料，整理一下：<br>一、设置<br>方法code：</p>
+<pre><code>/// &lt;summary&gt;
+/// 设置某一位的值
+/// &lt;/summary&gt;
+/// &lt;param name=&quot;data&quot;&gt;&lt;/param&gt;
+/// &lt;param name=&quot;index&quot;&gt;要设置的位， 值从低到高为 1-8&lt;/param&gt;
+/// &lt;param name=&quot;flag&quot;&gt;要设置的值 true / false&lt;/param&gt;
+/// &lt;returns&gt;&lt;/returns&gt;
+byte set_bit(byte data, int index, bool flag)
+{
+    if (index &gt; 8 || index &lt; 1)
+        throw new ArgumentOutOfRangeException();
+    int v = index &lt; 2 ? index : (2 &lt;&lt; (index - 2));
+    return flag ? (byte)(data | v) : (byte)(data &amp; ~v);
+}
+</code></pre><p>调用code：<br>    byte s = set_bit(8, 8, true);<br>结果：<br>    s 的值为 136， 结果正确。<br>二、获取值<br>获取一个字节中的每一位的值，需要分别与128 64 32 16 8 4 2 1相与&amp;运算<br>假设字节为byte1 </p>
+<pre><code>bit8 = byte1 &amp; 128 == 128 ? 1 : 0; 
+bit7 = byte1 &amp; 64 == 64 ? 1 : 0; 
+bit6 = byte1 &amp; 32 == 32 ? 1 : 0; 
+bit5 = byte1 &amp; 16 == 16 ? 1 : 0; 
+bit4 = byte1 &amp; 8 == 8 ? 1 : 0; 
+bit3 = byte1 &amp; 4 == 4 ? 1 : 0; 
+bit2 = byte1 &amp; 2 == 2 ? 1 : 0; 
+bit1 = byte1 &amp; 1 == 1 ? 1 : 0;
+</code></pre><p>另外，收集到网络上的其他资料：<br>引用：<a href="http://topic.csdn.net/u/20100121/11/66a2561e-49de-48d6-b0aa-4f3d1fea62e4.html" target="_blank" rel="noopener">http://topic.csdn.net/u/20100121/11/66a2561e-49de-48d6-b0aa-4f3d1fea62e4.html</a><br>你好,感谢你阅读此帖.</p>
+<p>今天我们要讨论的是在C#中如何获取一个数值中的某一位的数据,比如一个Byte型数据8,它的二进制表示为00001000(高位到低位),那我应该怎样获取它的第3位的值1呢?</p>
+<p>我的想法是这样的,先把第3位的值右移7-3=4位,然后再右移7位,最后取这个值,这样就把第3位前后的值都变为0了,最后输出它的值为1.下面是我写的一个方法:</p>
+<pre><code>    /// &lt;summary&gt;
+    /// 获取数据中某一位的值
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;input&quot;&gt;传入的数据类型,可换成其它数据类型,比如Int&lt;/param&gt;
+    /// &lt;param name=&quot;index&quot;&gt;要获取的第几位的序号,从0开始&lt;/param&gt;
+    /// &lt;returns&gt;返回值为-1表示获取值失败&lt;/returns&gt;
+    private int GetbitValue(byte input,int index)
+    {
+        if (index &gt; sizeof(byte))
+        {
+            return -1;
+        }
+        //左移到最高位
+        int value = input &lt;&lt; (sizeof(byte) - 1 - index);
+        //右移到最低位
+        value = value &gt;&gt; (sizeof(byte) - 1);
+        return value;
+    }
+
+
+
+//index从0开始 
+//获取取第index位 
+public static int GetBit(byte b, int index) { return ((b &amp; (1 &lt;&lt; index)) &gt; 0) ? 1: 0; }
+//将第index位设为1 
+public static byte SetBit(byte b, int index) { return (byte)(b | (1 &lt;&lt; index)); }
+//将第index位设为0 
+public static byte ClearBit(byte b, int index) { return (byte)(b &amp; (byte.MaxValue - (1 &lt;&lt; index))); }
+//将第index位取反 
+public static byte ReverseBit(byte b, int index) { return (byte)(b ^ (byte)(1 &lt;&lt; index)); }
+回复：
+private static int GetbitValue(byte input, int index)
+{
+int value;
+value = index&gt;0? input &gt;&gt; index-1: input;
+return value &amp;= 1;
+}
+</code></pre><p>回复：<br>C# code</p>
+<pre><code>//每8位为一个字节
+private const int bitCout = 8;
+///查询对象内存第index位值
+static int GetValueOfIndex(object obj, int index)
+{
+    int size = Marshal.SizeOf(obj);
+    System.IntPtr intPtr = Marshal.AllocHGlobal(size);
+    Marshal.StructureToPtr(obj,intPtr,true);
+    byte[] byteArr = new byte[size];
+    Marshal.Copy(intPtr,byteArr,0,size);
+    int count;
+    index = Math.DivRem(index, 8, out count);
+    Marshal.FreeHGlobal(intPtr);
+    return (byteArr[size-index-1] &gt;&gt; (8-count-1)) &amp; 1;
+}
+
+        for (int i = 0; i &lt; 32; i++)
+        {
+            int j = (int)Math.Pow(2, i);
+            Console.WriteLine(j + &quot;  :  &quot; + GetValueOfIndex(j, 31 - i));
+        }
+Console.WriteLine(15.0f + &quot;  :  &quot; + GetValueOfIndex(13, 28));
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/sample-post/" rel="tag"># sample post</a>
+          
+            <a href="/tags/code/" rel="tag"># code</a>
+          
+            <a href="/tags/highlighting/" rel="tag"># highlighting</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/17/2014-10-22-C# 生成缩略图/" rel="next" title="C# 生成缩略图">
+                <i class="fa fa-chevron-left"></i> C# 生成缩略图
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/17/2014-10-22-cygwin命令/" rel="prev" title="cygwin 命令">
+                cygwin 命令 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">John Doe</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

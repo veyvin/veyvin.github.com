@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="sample post,code,highlighting," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="CPU：反射效果、粒子效果（爆炸、灰尘、地面痕迹等）、物理碰撞效果（N卡可以用物理加速替代）GPU：光晕、景深效果、着色器（渲染）、灯光效果、阴影、地形细节、3D模型品质、抗锯齿显存：材质品质（贴图品质）CPU可以保证3D游戏的速度，而对画质、3D特效等不能产生太大的影响。相反，GPU在各种环境下都要对速度与画质两个方面做出最大的贡献。一般而言，建议你适当地在显卡上多加投资，这样会获得更好的效果。">
+<meta name="keywords" content="sample post,code,highlighting">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GPU">
+<meta property="og:url" content="http://yoursite.com/2018/04/17/2014-10-22-GPU/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="CPU：反射效果、粒子效果（爆炸、灰尘、地面痕迹等）、物理碰撞效果（N卡可以用物理加速替代）GPU：光晕、景深效果、着色器（渲染）、灯光效果、阴影、地形细节、3D模型品质、抗锯齿显存：材质品质（贴图品质）CPU可以保证3D游戏的速度，而对画质、3D特效等不能产生太大的影响。相反，GPU在各种环境下都要对速度与画质两个方面做出最大的贡献。一般而言，建议你适当地在显卡上多加投资，这样会获得更好的效果。">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-04-17T10:34:28.591Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="GPU">
+<meta name="twitter:description" content="CPU：反射效果、粒子效果（爆炸、灰尘、地面痕迹等）、物理碰撞效果（N卡可以用物理加速替代）GPU：光晕、景深效果、着色器（渲染）、灯光效果、阴影、地形细节、3D模型品质、抗锯齿显存：材质品质（贴图品质）CPU可以保证3D游戏的速度，而对画质、3D特效等不能产生太大的影响。相反，GPU在各种环境下都要对速度与画质两个方面做出最大的贡献。一般而言，建议你适当地在显卡上多加投资，这样会获得更好的效果。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/04/17/2014-10-22-GPU/"/>
+
+
+
+
+
+  <title>GPU | Hexo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/17/2014-10-22-GPU/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">GPU</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-17T22:50:45+08:00">
+                2018-04-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>CPU：反射效果、粒子效果（爆炸、灰尘、地面痕迹等）、物理碰撞效果（N卡可以用物理加速替代）<br>GPU：光晕、景深效果、着色器（渲染）、灯光效果、阴影、地形细节、3D模型品质、抗锯齿<br>显存：材质品质（贴图品质）<br>CPU可以保证3D游戏的速度，而对画质、3D特效等不能产生太大的影响。相反，GPU在各种环境下都要对速度与画质两个方面做出最大的贡献。一般而言，建议你适当地在显卡上多加投资，这样会获得更好的效果。因为从理论上说，一旦游戏的分辨率以及颜色数提高，或者大量运用3D特效，显卡的负担将呈几何倍速提高，对像素填充率与显存带宽提出极高的要求。而DirectX硬件支持则完全依赖于显卡GPU本身的素质，如果你的显卡达不到这项要求，纵然CPU是双核甚至是四核也无济于事。<br>CPU是物理运算<br>    GPU是把设计好的物理图象打包,要用时,直接调用   </p>
+<p>渲染 有两种 时时渲染，和最终渲染<br>显卡的工作，换句话说 显卡的职责，显卡最初的设计理论，当初为什么要设计，发明显卡 是为了解决3D时时加速的。 在当时的应用就是游戏，和3D应用。显卡的工作就是多边形生成和纹理贴图。<br>在3DMAX中间 4个透视窗口中我们建立模型是依靠显卡GPU进行运算的，时时计算3D加速 支持OPENGL或者D3D 这些都是时时渲染加速，不支持复杂的光照运算。<br>之所以显卡不支持复杂光照运算是由于显卡的构造而决定了。<br>我举个例子 画笔和图案印章 。同样画图 很显然图案印章的效率明显比画笔快，压以下一个图案，但是印章的局限就是图案简单，也就是说它只能画出GPU本身所支持的算发，也就是几个简单的加减乘除，和函数计算（GPU只继承了这些算法） GPU就是图案印章。<br>画笔 我不说你也应该知道它就是CPU了 虽然画画速度慢 但是他想画什么就能画什么，只要软件支持。因为CPU的指令集非常丰富，能进行软件所支持的任何计算，无论是加减乘除还是复杂的函数运算，根号运算都支持。 而这个就是渲染最终效果图所需要的。<br>即使现在的游戏，光影都是由CPU负责的， 显卡的工作就是多边形生成 和文理贴图， 不具备光影处理能力。 现在的游戏中 光影都是假光影，物体的反射都是材质贴图，也就是说镜子所反射的不是周围的物体 而是制作了一个周围物体的贴图给了镜子。<br>从D3D9以后 显卡能够多一点的分担CPU的负担 集成的更多的指令集和函数流水线，但是他毕竟是用来加速时时3D的 所以流处理器的个数才是最重要的。1个流处理器就是一个CPU 只不过指令集和功能比CPU少的可怜。<br>无论是专业显卡还是中等的图形工作站 显卡都不参与效果图渲染。<br>即使以后显卡能够渲染效果图了，我们也不会使用显卡渲染 因为CPU体积比显卡小多了，大型服务器 超级计算机 图形渲染集群都是成千上万的CPU组成的 一般一部服务器 安装了500 600个CPU，如果换成显卡，那体积不得了。而且用途也不广泛，CPU是万能的。<br>专业显卡和游戏显卡 本身没有区别，也就是说显卡硬件GPU没有区别。区别在于驱动。在GPU中间有一个OPENGL硬件开关，出厂的时候就已经设定好的，NV显卡无法修改ATI显卡可以保护光驱。 游戏显卡注重速度，而不注重质量，只对D3D支持和基础OPENGL 不支持专业OPENGL<br>专业显卡注重质量，抗锯齿模式丰富，并且支持线框抗锯齿。游戏中，只有物体边缘有矩尺，而专业做图，由于线筐多，一个屏幕复杂的要几万条线条，所以抗矩尺很重要<br>和游戏显卡不同 专业显卡对于3D模型的内部显示做优化，游戏中的汽车，只显示汽车外表，而专业作图不仅显示外表 还要显示汽车内部结构。显示的内容都是不一样的！<br>无视任何缩水画面,鄙视一切缩水特效,王道的最高特效及画面,王道的电脑群~雄起!  </p>
+<p>CPU的主要功能参数详解  </p>
+<p>一：CPU主频：<br> 这是一个最受新手关注的指标，指的就是CPU内核工作的时钟频率（CPU Clock Speed）。通常所说的某款CPU是多少兆赫兹的，而这个多少兆赫兹就是“CPU的主频”。在学校经常听见一些人问，XXX网吧的CPU2.66G！XXX网吧的才2G，有人用2.66G的赛扬与2.0G-2.66G的P4比，这是无知的表现，和他们争是无意义的：）。主频虽与CPU速度有关系，但确对不是绝对的正比关系，因为CPU的运算速度还要看CPU流水线（流水线下面介绍）的各方面性能指标（缓存、指令集，CPU位数等）。因此主频不代表CPU的整体性能，但提高主频对于提高CPU运算速度却是至关重要的。主频的计算公式为：主频＝外频*倍频。  </p>
+<p>二：外频：<br>         外频是CPU乃至整个计算机系统的基准频率，单位是MHz（兆赫兹）。在早期的电脑中，内存与主板之间的同步运行的速度等于外频，在这种方式下，可以理解为CPU外频直接与内存相连通，实现两者间的同步运行状态。对于目前的计算机系统来说，两者完全可以不相同，但是外频的意义仍然存在，计算机系统中大多数的频率都是在外频的基础上，乘以一定的倍数来实现，这个倍数可以是大于1的，也可以是小于1的。  </p>
+<p>三：倍频：<br>     CPU的倍频，全称是倍频系数。CPU的核心工作频率与外频之间存在着一个比值关系，这个比值就是倍频系数，简称倍频。理论上倍频是从1.5一直到无限的，但需要注意的是，倍频是以以0.5为一个间隔单位。外频与倍频相乘就是主频，所以其中任何一项提高都可以使CPU的主频上升。  原先并没有倍频概念，CPU的主频和系统总线的速度是一样的，但CPU的速度越来越快，倍频技术也就应允而生。它可使系统总线工作在相对较低的频率上，而CPU速度可以通过倍频来无限提升。那么CPU主频的计算方式变为：主频 === 外频 x 倍频。也就是倍频是指CPU和系统总线之间相差的倍数，当外频不变时，提高倍频，CPU主频也就越高。  </p>
+<p>主频因素说完了，现在让我们来看看别的影响CPU速度的“东西”请允许我称他为东西，说功能现行  </p>
+<p>四：流水线：<br>        这东西学地理的应该懂，高一下册地理书有说，他相当于一个公程的一部分一部分，我自己打个比喻！比如：就拿跑步和走路来说，就分为2级流水线，即左脚，再右脚，再一直循环下去，一级的话就可以说成是双脚一起跳，这样效率当然低，对吧。。。。。。这就是生活的流水线，当你左脚走出去之后，如果发现前面有一堆大便，只好重来了（设一次一定走2步）这就是流水线级别上去之后跟随的错误一出来CPU就要重新计算。。。。。也许我说得不太明白，下面引用别人的话来说，在制造CPU的过程中,除了硬件设计之外,还有逻辑设计,流水线设计就属于逻辑设计范畴,举个例子来讲,比如说一家汽车工厂,在生产汽车的过程中采用了四个大组分别来完成四个生产步骤:1组生产汽车底盘,二组给底盘上装引擎,三组给汽车装外壳及轮胎,四组做喷漆,装玻璃及其他,这就叫做一条四级的流水线.(现在的大型汽车生产厂也的确是按照类似流水线来提高生产效率的). 假设每个步骤需要1小时,那么如果我们让1大组在做完1辆车的底盘后马上开始生产下一辆的底盘,二大组在做完一辆车的引擎后立刻投入下一辆车引擎的组装,以次类推三,四组的工作也如此,这样一来,每一小时就会有一辆奔驰或宝马被生产出来,这就相当于是CPU的指令排序执行. 但如果我们还想提升工厂的生产效率,又该怎么办呢?那么我们就可以将上述的每个大组在分成2个小组,形成一条8级的生产流水线,这样就形成每个小组(注意是”小组”)只需要半小时就可以完成自己的工作,那么相应的每半小时就会有一辆汽车走下生产线,这样就提高了效率(这里不太好理解,请大家仔细想想就会明白).<br>根据这个道理,CPU的流水线也就不难理解了,只不过是把生产汽车变成了执行程序指令而已,原理上是相通的。  </p>
+<p>那么这里可以想到,如果再把流水线加长,是不是效率还可以提高呢? 当人们把这个想法运用到CPU设计中时才发现,由于采用流水线来安排指令,所以非常不灵活,一旦某一级的指令执行出错的话,整条流水线就会停止下来,再一极一级地去找出错误,然后把整条流水线清空,重新载入指令,这样一来,会浪费很多时间,执行效率反而十分低下,为了解决这个问题,科学家们又采用了各种预测技术来提高指令执行的正确率,希望在保持长流水线的同时尽量避免发生清空流水线的悲剧,这就是经常看到的Intel的广告”该处理器采用了先进的分支预测技术….”,当你明白了上面我所讲的后,你就知道了吹得那么玄乎,其实也就不过如此.<br>还有不得不说的就是:长流水线会让CPU轻易达到很高的运行频率,但在这2G,3G的频率中又有多少是真正有效的工作频率呢? 而且级数越多,所累计出来的延迟越长,因为工作小组在交接工作时是会产生信号延迟的,虽然每个延迟很短,但20甚至30级的流水线所累计出来的延迟是不可忽视的,这样就形成了一个很好笑的局面,流水线技术为处理器提升了频率,但又因为自身的缺陷产生了很大的效率空白,将优势抵消掉,高频率的CPU还会带来高功耗和高发热量,所以说流水线并非越长越好   </p>
+<p>近年来Intel的奔四处理器经过了三个阶段的发展,最早的奔四采用的是(威廉)核心,该核心只有13级的流水线,普遍频率未上2G,速度一般,第二代的奔四采用的(northwoog北木)核心,这个核心有20级流水线,由于流水线级数比较合适,所以大副提升了奔四的速度,但又未影响执行效率,当时的奔四2.4A是一款经典产品,将AMD的速龙XP系列一直压制住,Intel因此尝到了甜头,很快就推出了Prescott(波塞冬)核心,这个长达31级流水线的新核心将奔四带入了近3G的速度,这个数字是AMD可望而不可及的,但人们很快发现新奔四的实际运行效率还不如老核心奔四,然尔频率却那么高,发热和功耗那么大,Intel凭借这块新核心”光荣”地获得了”高频低能”的美名,这个时候AMD适时推出了”速龙64”系列,全新的架构,20级的流水线,不高的发热与功耗,最重要的是低频高效,一举击败了新奔四,获得了很高的评价,Intel也吞下了自己造的苦果:被迫停止了4G奔四的开发,失去了不少的市场份额,连总裁贝瑞特也在IDF05上给大众下跪以求原谅.    </p>
+<p>CPU缓存：<br> CPU缓存（Cache Memory）位于CPU与内存之间的临时存储器，它的容量比内存小但交换速度快。在缓存中的数据是内存中的一小部分，但这一小部分是短时间内CPU即将访问的，当CPU调用大量数据时，就可避开内存直接从缓存中调用，从而加快读取速度。由此可见，在CPU中加入缓存是一种高效的解决方案，这样整个内存储器（缓存+内存）就变成了既有缓存的高速度，又有内存的大容量的存储系统了。缓存对CPU的性能影响很大，主要是因为CPU的数据交换顺序和CPU与缓存间的带宽引起的。<br>缓存的工作原理是当CPU要读取一个数据时，首先从缓存中查找，如果找到就立即读取并送给CPU处理；如果没有找到，就用相对慢的速度从内存中读取并送给CPU处理，同时把这个数据所在的数据块调入缓存中，可以使得以后对整块数据的读取都从缓存中进行，不必再调用内存。<br>正是这样的读取机制使CPU读取缓存的命中率非常高（大多数CPU可达90%左右），也就是说CPU下一次要读取的数据90%都在缓存中，只有大约10%需要从内存读取。这大大节省了CPU直接读取内存的时间，也使CPU读取数据时基本无需等待。总的来说，CPU读取数据的顺序是先缓存后内存。<br>最早先的CPU缓存是个整体的，而且容量很低，英特尔公司从Pentium时代开始把缓存进行了分类。当时集成在CPU内核中的缓存已不足以满足CPU的需求，而制造工艺上的限制又不能大幅度提高缓存的容量。因此出现了集成在与CPU同一块电路板上或主板上的缓存，此时就把 CPU内核集成的缓存称为一级缓存，而外部的称为二级缓存。一级缓存中还分数据缓存（Data Cache，D-Cache）和指令缓存（Instruction Cache，I-Cache）。二者分别用来存放数据和执行这些数据的指令，而且两者可以同时被CPU访问，减少了争用Cache所造成的冲突，提高了处理器效能。英特尔公司在推出Pentium 4处理器时，用新增的一种一级追踪缓存替代指令缓存，容量为12KμOps，表示能存储12K条微指令。<br>随着CPU制造工艺的发展，二级缓存也能轻易的集成在CPU内核中，容量也在逐年提升。现在再用集成在CPU内部与否来定义一、二级缓存，已不确切。而且随着二级缓存被集成入CPU内核中，以往二级缓存与CPU大差距分频的情况也被改变，此时其以相同于主频的速度工作，可以为CPU提供更高的传输速度。<br>二级缓存是CPU性能表现的关键之一，在CPU核心不变化的情况下，增加二级缓存容量能使性能大幅度提高。而同一核心的CPU高低端之分往往也是在二级缓存上有差异，由此可见二级缓存对于CPU的重要性。<br>CPU在缓存中找到有用的数据被称为命中，当缓存中没有CPU所需的数据时（这时称为未命中），CPU才访问内存。从理论上讲，在一颗拥有二级缓存的CPU中，读取一级缓存的命中率为80%。也就是说CPU一级缓存中找到的有用数据占数据总量的80%，剩下的20%从二级缓存中读取。由于不能准确预测将要执行的数据，读取二级缓存的命中率也在80%左右（从二级缓存读到有用的数据占总数据的16%）。那么还有的数据就不得不从内存调用，但这已经是一个相当小的比例了。目前的较高端的CPU中，还会带有三级缓存，它是为读取二级缓存后未命中的数据设计的—种缓存，在拥有三级缓存的CPU中，只有约5%的数据需要从内存中调用，这进一步提高了CPU的效率。<br>为了保证CPU访问时有较高的命中率，缓存中的内容应该按一定的算法替换。一种较常用的算法是“最近最少使用算法”（LRU算法），它是将最近一段时间内最少被访问过的行淘汰出局。因此需要为每行设置一个计数器，LRU算法是把命中行的计数器清零，其他各行计数器加1。当需要替换时淘汰行计数器计数值最大的数据行出局。这是一种高效、科学的算法，其计数器清零过程可以把一些频繁调用后再不需要的数据淘汰出缓存，提高缓存的利用率。<br>CPU产品中，一级缓存的容量基本在4KB到64KB之间，二级缓存的容量则分为128KB、256KB、512KB、1MB、2MB等。一级缓存容量各产品之间相差不大，而二级缓存容量则是提高CPU性能的关键。二级缓存容量的提升是由CPU制造工艺所决定的，容量增大必然导致CPU内部晶体管数的增加，要在有限的CPU面积上集成更大的缓存，对制造工艺的要求也就越高</p>
+<p>前端总线：<br> 前端总线是处理器与主板北桥芯片或内存控制集线器之间的数据通道，其频率高低直接影响CPU访问内存的速度；BIOS可看作是一个记忆电脑相关设定的软件，可以通过它调整相关设定。BIOS存储于板卡上一块芯片中，这块芯片的名字叫COMS RAM。但就像ATA与IDE一样，大多人都将它们混为一谈。<br>因为主板直接影响到整个系统的性能、稳定、功能与扩展性，其重要性不言而喻。主板的选购看似简单，其实要注意的东西很多。选购时当留意产品的芯片组、做工用料、功能接口甚至使用简便性，这就要求对主板具备透彻的认识，才能选择到满意的产品。<br>总线是将信息以一个或多个源部件传送到一个或多个目的部件的一组传输线。通俗的说，就是多个部件间的公共连线，用于在各个部件之间传输信息。人们常常以MHz表示的速度来描述总线频率。总线的种类很多，前端总线的英文名字是Front Side Bus，通常用FSB表示，是将CPU连接到北桥芯片的总线。计算机的前端总线频率是由CPU和北桥芯片共同决定的。<br>CPU就是通过前端总线（FSB）连接到北桥芯片，进而通过北桥芯片和内存、显卡交换数据。前端总线是CPU和外界交换数据的最主要通道，因此前端总线的数据传输能力对计算机整体性能作用很大，如果没足够快的前端总线，再强的CPU也不能明显提高计算机整体速度。数据传输最大带宽取决于所有同时传输的数据的宽度和传输频率，即数据带宽＝（总线频率×数据位宽）÷8。目前PC机上所能达到的前端总线频率有266MHz、333MHz、400MHz、533MHz、800MHz几种，前端总线频率越大，代表着CPU与北桥芯片之间的数据传输能力越大，更能充分发挥出CPU的功能。现在的CPU技术发展很快，运算速度提高很快，而足够大的前端总线可以保障有足够的数据供给给CPU，较低的前端总线将无法供给足够的数据给CPU，这样就限制了CPU性能得发挥，成为系统瓶颈。<br>CPU和北桥芯片间总线的速度，更实质性的表示了CPU和外界数据传输的速度。而外频的概念是建立在数字脉冲信号震荡速度基础之上的，也就是说，100MHz外频特指数字脉冲信号在每秒钟震荡一万万次，它更多的影响了PIC及其他总线的频率。之所以前端总线与外频这两个概念容易混淆，主要的原因是在以前的很长一段时间里（主要是在Pentium 4出现之前和刚出现Pentium 4时），前端总线频率与外频是相同的，因此往往直接称前端总线为外频，最终造成这样的误会。随着计算机技术的发展，人们发现前端总线频率需要高于外频，因此采用了QDR（Quad Date Rate）技术，或者其他类似的技术实现这个目前。这些技术的原理类似于AGP的2X或者4X，它们使得前端总线的频率成为外频的2倍、4倍甚至更高，从此之后前端总线和外频的区别才开始被人们重视起来。<br> CPU工艺：<br> 指在硅材料上生产CPU时内部各元器材的连接线宽度，一般用微米表示。微米值越小制作工艺越先进，CPU可以达到的频率越高，集成的晶体管就可以更多。目前Intel的P4和AMD的XP都已经达到了0.13微米的制造工艺，明年将达到0.09微米的制作工艺。<br>从上面我们了解了CPU的逻辑结构以及一些基本技术参数，本文将继续全面的了解影响CPU性能的有关技术参数。   </p>
+<p>深入浅出CPU种类介绍&lt;一&gt;   </p>
+<p>  对于一台电脑系统，CPU的作用就象心脏对我们一样重要。我们选购电脑时总要首先问，是486还是586，是100还是300，是MMX还是3D－NOW！，这些指的就全是CPU的指标，CPU在整个微机系统的核心作用，足以作为划分CPU档次的标准，这使它几乎成为各种档次微机的代名词。我们可以说，CPU的性能能大致反映出我们的微机系统的性能，这对我们的选择的重要性是显而易见的。  </p>
+<p>  1、什么是CPU？   </p>
+<p>  CPU是英语”Central Processing Unit”的缩写，其中文的直译为”中央处理单元”，CPU的主要功能是进行运算和逻辑运算，其物理结果包括逻辑运算单元、控制单元和存储单元组成。在逻辑运算和控制单元中包括一些寄存器，这些寄存器用于CPU在处理数据过程中数据的暂时保存。在这里，并不需要弄清楚CPU的复杂原理，我们只是从性能参数的挑选方面对其进行一些必要的认识，这对认识和采购、配置计算机是大有帮助的。   </p>
+<p>  2、CPU主要的性能指标：<br>  主频：即CPU内部核心工作的时钟频率，单位一般是兆赫兹（MHz）。这是我们最关心的一个参数，我们通常所说的233、 300、450等就是指它。对于同种类的CPU，主频越高，CPU的速度就越快，整机的性能就越高。由于内部的结构不同，不同种的CPU之间不能直接通过主频来比较，而且高主频的CPU的实际表现性能,还与外频、缓存等大小有关，带有特殊指令的CPU，则相对程度地依赖软件的优化程度。   </p>
+<p>  外频和倍频数：外频即CPU的外部时钟频率。CPU的主频与外频的关系是：CPU主频 ＝ 外频×倍频数，外频是由电脑主板提供的，486的外频一般是33MHz，40MHz，Pentium主板的外频一般是66MHz，也有主板支持75各83MHz。而目前Intel公司最新的芯片组440BX可以使用100MHz甚至更高的时钟频率。另外VIA公司的MVP3、MVP4，APPLO PRO 等一些非 Intel的芯片组也开始支持100MHz的外频，一些主板由于技术精良，工艺先进，可以超频1/3以上稳定使用，成为超频爱好者的首选。Intel公司的下一代主板芯片将支持133MHz的外频，AMD的K7甚至将使用200MHz的外频<br>深入浅出CPU种类介绍&lt;二&gt;   </p>
+<p>  内部缓存（L1 Cache）：采用速度极快的SRAM制作，与 CPU共同封装于芯片内部的高速缓存，用于暂时存储CPU运算时的最近的部分指令和数据，存取速度与CPU主频相同 (一般称为全速) ， L1缓存的容量一般以KB为单位。L1缓存全速工作，其容量越大，使用频率最高的数据和结果就越容易尽快进入CPU进行运算，CPU工作时与存取速度较慢的L2缓存和内存间交换数据的次数越少，相对电脑的运算速度可以提高。486就因为集成了内部Cache，速度比386快了许多。最早的486内部一般有1K～8K的L1 Cache，现在的Pentium II的L1 Cache一般有32K，而Cyrix和AMD的芯片内部有64K甚至更多。    </p>
+<p>  二级缓存（L2 Cache）：集成于CPU外部的高速缓存，L2 Cache 的一般容量是128K～2M。容量越大，系统的综合性能越高。一般的 L2 Cache 运行于系统外频或 CPU 主频的一半，后来 Pentium Pro处理器采用的L2和CPU运行在相同频率下，由于芯片成品率太低，成本昂贵，所以后来Pentium II的L2 Cache运行在相当于CPU频率一半下的，但容量增加为512K。现在的至强处理器又采用了全速的L2 Cache，容量增大至512K到2M之间，以求性能获得提高。没有Cache的赛扬处理器，性能下降不少。   </p>
+<p>  MMX技术：是”多媒体扩展指令集”的缩写。MMX是Intel公司为增强 Pentium CPU 在音像、图形和通信应用方面而采取的新技术。这一技术为CPU增加了全新的57条MMX指令，还将CPU芯片内的L1缓存由原来的16KB增加到32KB（16K指命+16K数据），因此MMX CPU比普通CPU在运行含有MMX指令的程序时，处理多媒体的能力上提高了60％左右。即使不使用MMX指令的程序，也能获得 15％ 左右的性能提升。MMX已经成为选择CPU的一个基本标准，目前CPU基本都具备MMX技术，除Pentium P55C（Pentium MMX）和Pentium ⅡCPU还有K6、K6 3D（K6－2）、MII，6X86MX，IDT C6等。不支持MMX指令的CPU可以不用考虑了。   </p>
+<p>  3D指令技术：MMX指令解决了多媒体运算的瓶颈，但只是加速了整数运算速度，对于需要大规模浮点运算的3D图形处理和游戏就无能为力了。针对日益增长的3D处理要求，支持3D指令将同支持MMX指令一样重要。目前支持3D指令的CPU只有AMD一家，使用3D－Now！技术的CPU可以大幅度加速三维处理速度，从而把游戏和图形处理带入一个崭新的境界。Intel即将出台的MMX2指令集将更为强大，这些指令集必须依靠软件的优化支持才能完全发挥CPU的性能。制造工艺：单位是微米。现在 CPU 的制造工艺是一般0.35微米，最新的PII和K6－2可以达到0.28～0.25微米，不远的将来，CPU制造工艺可以达到0.18微米甚至0.13微米。CPU的微米级别直接决定了CPU的极限频率，0.35微米的CPU工作频率一般不超过250MHz，而0.13微米的铜芯技术芯片可以稳定地工作在1000MHz     </p>
+<p>C P U 的 种 类 </p>
+<p> CPU<br>   现在市场上能买到的CPU有三种：INTEL、AMD、CYRIX/IBM。</p>
+<p>  INTEL是众所周知的龙头老大，它的CPU当然性能是最好的，但价格也是最高的，特别是高主频的产品。对性能有很高要求的应用,如图形处理、3D游戏等，INTEL    CPU表现最为突出。   </p>
+<p>  CYRIX/IBM的MMX  CPU价位极低,整数性能最好,而浮点运算偏弱,在一般的低档商用和家用组装机市场上占有率很高。   </p>
+<p>  AMDK5已经无人问津,K6较受欢迎,整数和浮点性能在INTEL和CYRIX之间,但它的价格没有与PENTIUM MMX拉开距离,在零售市场上似乎买者不多。   </p>
+<p>  CPU市场上演三国演义，INTEL、AMD、CYRIX一强两弱，但INTEL一枝独秀是局面正在改变。AMD的K6+和K63D技术发展很快,98年会有一批新CPU和主板出台，要与INTELPII一争高下，誓夺30%市场份额。而CYRIX在被国家半导体公司收购后，有了大靠山，最近发表了几种性能很高的未来CPU的技术细节，浮点运算反而成了其强项。98、99年，CPU市场会有一番龙争虎斗。    </p>
+<p>C P U 的 种 类    </p>
+<pre><code>在CPU的选择上，我们从来没有过像现在那样面临那么多的选择，一家独大的Intel，最有力的挑战者AMD，实力大增的Cyrix，刚出世的IDT，他们的CPU加起来有近25种了，为了让大家能更好地选择CPU，我们就这25种CPU做了一个评测。   
+处理器的选择    
+</code></pre><p>为了能让你做出最佳的处理器选择，你首先要确定自己要它作什么，如过你经常使用的是商业程序，而且你关心的是处理器的价格，那么非MMX的芯片（Pentium、K5、6X86）是你最佳的选择，但是这个档次的芯片很快就要退出市场了。尽管现在的MMX CPU还不能给你很大的好处，但是更新型的MMX CPU在其它方面也有增强，使它们能在运行所有的程序时获得更高的性能，而且现在MMX CPU的价钱已经降到一个很合理的位置，MMX CPU应该是你最佳的选择。在第六代芯片中，如果你经常使用的是如Winstone中所运行的程序一样，并且你也想拥有MMX技术，那么AMD的K6和Cyrix的MII就显得更有价值了，相同档次的K6和MII能提供和PentiumII非常接近的Winstone得分，而且它们的价格比PentiumII便宜了一半有多，但它们的MMX性能远比PentiumII差的多（这一点会在他们的下一代CPUKII和Mxi中得到加强），但总比没有MMX的CPU好的多，经过测试，PentiumII被证明是最优秀的，无论在商业还是在高端的应用中，它都显示出了应有的性能，在MMX和浮点测试中更证明是无与伦比的。如果你是一个高端用户或者是一个3D游戏迷，那么别忧郁了，PentiumII是你最佳的选择，不论是233MHZ的还是最近的450MHZ的。因为PentiumII的双重总线技术和强大的浮点性能都会使你在应用中得到最好的表现。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/sample-post/" rel="tag"># sample post</a>
+          
+            <a href="/tags/code/" rel="tag"># code</a>
+          
+            <a href="/tags/highlighting/" rel="tag"># highlighting</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/17/2014-10-22-cygwin命令/" rel="next" title="cygwin 命令">
+                <i class="fa fa-chevron-left"></i> cygwin 命令
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/17/游戏引擎设计/" rel="prev" title="">
+                 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">John Doe</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
